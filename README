@@ -4,6 +4,8 @@ initial code - Lars Nerger, Himansu Kesari Pradhan, Alfred Wegener Institute, Br
 update for PDAF-OMI - Lars Nerger, Nabir Mamnun, Alfred Wegener Institute, Bremerhaven, Germany, 11/2021
 pdaf@awi.de
 
+The code currently supports PDAF2. It will be upgraded to PDAF3.
+
 Overview
 --------
 
