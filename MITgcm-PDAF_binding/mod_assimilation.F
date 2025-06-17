@@ -66,6 +66,8 @@ C     Settings for time stepping - available as command line options
 
 C     Settings for observations - available as command line options
       INTEGER :: nsteps_between_obs  ! time step interval between assimilation steps
+      INTEGER :: observe_ens=0       ! (0) apply H also to ensemble mean; (1) apply H only to ensemble states
+      INTEGER :: type_obs_init=1     ! init obs. (0) before or (1) after call to prepostsstep
 
 C     General control of PDAF - available as command line options
       INTEGER :: screen       ! Control verbosity of PDAF

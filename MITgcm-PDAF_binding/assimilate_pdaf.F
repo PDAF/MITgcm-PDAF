@@ -15,8 +15,7 @@ C     !INTERFACE:
       SUBROUTINE assimilate_pdaf(myTimeLoc, myIterLoc, myThidLoc)
 C     !USES:
       USE pdaf,
-     & ONLY:  PDAF3_assimilate_local,
-     &        PDAF3_assimilate_global,
+     & ONLY:  PDAF3_assimilate,
      &        PDAF3_assimilate_lenkf,
      &        PDAF_get_localfilter
       USE mod_parallel_model, ONLY: mype_world, abort_parallel
@@ -45,9 +44,7 @@ C     Interface between model and PDAF, and prepoststep
      &     prepoststep_ens_pdaf         ! User supplied pre/poststep routine
 C     Localization of state vector
       EXTERNAL :: init_n_domains_pdaf,  ! Provide number of local analysis domains
-     &     init_dim_l_pdaf,             ! Initialize state dimension for local ana. domain
-     &     g2l_state_pdaf,              ! Get state on local ana. domain from global state
-     &     l2g_state_pdaf               ! Init global state from state on local analysis domain
+     &     init_dim_l_pdaf              ! Initialize state dimension for local ana. domain
 C     Interface to PDAF-OMI for local and global filters
       EXTERNAL :: init_dim_obs_pdafomi, ! Get dimension of full obs. vector for PE-local domain
      &     obs_op_pdafomi,              ! Obs. operator for full obs. vector for PE-local domain
@@ -65,34 +62,21 @@ C     *********************************
       myThid = myThidLoc
       myTime = myTimeLoc
 
-C     Check whether the filter is domain-localized
-      CALL PDAF_get_localfilter(localfilter)
 
-      IF (localfilter == 1) THEN
-C        WRITE(*,*) 'Call of PDAFomi_assimilate_local'
-         CALL PDAF3_assimilate_local(collect_state_pdaf,
+      IF (filtertype/=8) THEN
+         CALL PDAF3_assimilate(collect_state_pdaf,
      &        distribute_state_pdaf, init_dim_obs_pdafomi,
-     &        obs_op_pdafomi, 
-     &        init_n_domains_pdaf, init_dim_l_pdaf,
-     &        init_dim_obs_l_pdafomi, g2l_state_pdaf,
-     &        l2g_state_pdaf, prepoststep_ens_pdaf,
-     &        next_observation_pdaf, status_pdaf)
+     &        obs_op_pdafomi, init_n_domains_pdaf, 
+     &        init_dim_l_pdaf, init_dim_obs_l_pdafomi, 
+     &        prepoststep_ens_pdaf, next_observation_pdaf, status_pdaf)
 
       ELSE
-         IF (filtertype/=8) THEN
-C           All global filters, except LEnKF
-            CALL PDAF3_assimilate_global(collect_state_pdaf,
-     &           distribute_state_pdaf, init_dim_obs_pdafomi,
-     &           obs_op_pdafomi, prepoststep_ens_pdaf,
-     &           next_observation_pdaf, status_pdaf)
-         ELSE
-C           LEnKF has its own OMI interface routine
-            CALL PDAF3_assimilate_lenkf(collect_state_pdaf,
-     &           distribute_state_pdaf, init_dim_obs_pdafomi,
-     &           obs_op_pdafomi, prepoststep_ens_pdaf,
-     &           localize_covar_pdafomi, next_observation_pdaf,
-     &           status_pdaf)
-         END IF
+C        LEnKF has its own OMI interface routine
+         CALL PDAF3_assimilate_lenkf(collect_state_pdaf,
+     &        distribute_state_pdaf, init_dim_obs_pdafomi,
+     &        obs_op_pdafomi, prepoststep_ens_pdaf,
+     &        localize_covar_pdafomi, next_observation_pdaf,
+     &        status_pdaf)
       END IF
 
 

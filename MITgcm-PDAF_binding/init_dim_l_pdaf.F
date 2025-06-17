@@ -19,6 +19,8 @@ C     !INTERFACE:
       SUBROUTINE init_dim_l_pdaf(step, domain_p, dim_l)
 
 C     !USES:
+      USE PDAF, 
+     &     ONLY: PDAFlocal_set_indices
       USE mod_assimilation,
      &     ONLY: coords_l, id_lstate_in_pstate, n_fields, off_fields, id
 
@@ -89,5 +91,8 @@ C     This approach ensures its independence of the id values of etaN
             ENDDO
          ENDIF
       ENDDO
+
+C     Provide the index vector to PDAF
+      CALL PDAFlocal_set_indices(dim_l, id_lstate_in_pstate)
 
       END SUBROUTINE init_dim_l_pdaf

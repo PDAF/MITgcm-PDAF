@@ -25,7 +25,7 @@ C
 C     !USES:
 C     Interface definitions for PDAF
       USE pdaf,
-     &     ONLY: PDAF_init, PDAF_init_forecast
+     &     ONLY: PDAF_init, PDAF_init_forecast, PDAF_set_iparam
 C     Parallelization variables for model
       USE mod_parallel_model,
      &     ONLY: mype_world, COMM_model, abort_parallel
@@ -38,7 +38,8 @@ C     Variables for assimilation
      &     nsteps_between_obs, type_forget, forget,
      &     locweight, cradius, sradius, type_trans, type_sqrt,
      &     myIter, myThid, MyTime, write_ens, 
-     &     n_fields, id, dim_fields, off_fields
+     &     n_fields, id, dim_fields, off_fields,
+     &     observe_ens, type_obs_init
       USE obs_etan_pdafomi,
      &      ONLY: assim_etan, rms_obs_etan
 
@@ -62,8 +63,8 @@ C!EOP
 
 C     Local variables
       INTEGER :: i                       ! Counter
-      INTEGER :: filter_param_i(7)       ! Integer parameter array for filter
-      REAL(kind=8) :: filter_param_r(2)  ! Real parameter array for filter
+      INTEGER :: filter_param_i(2)       ! Integer parameter array for filter
+      REAL(kind=8) :: filter_param_r(1)  ! Real parameter array for filter
       INTEGER :: status_pdaf             ! PDAF status flag
 
 C     External subroutines
@@ -78,7 +79,7 @@ C     Namelist for PDAF settings
      &     iter_null, nsteps_between_obs,
      &     type_forget, forget, type_trans, type_sqrt,
      &     locweight, cradius, sradius, write_ens,
-     &     assim_etan, rms_obs_etan
+     &     assim_etan, rms_obs_etan, observe_ens, type_obs_init
 
 
 C     *** Store information from MITgcm to be used in call-back routines ***
@@ -272,20 +273,25 @@ C     *****************************************************
 
       filter_param_i(1) = dim_state_p ! State dimension
       filter_param_i(2) = dim_ens     ! Size of ensemble
-      filter_param_i(3) = 0           ! Smoother lag (not implemented here)
-      filter_param_i(4) = 0           ! Incremental analysis (not implemented here)
-      filter_param_i(5) = type_forget ! Type of forgetting factor
-      filter_param_i(6) = type_trans  ! Type of ensemble transformation
-      filter_param_i(7) = type_sqrt   ! Type of transform square-root (SEIK-sub4/ESTKF)
       filter_param_r(1) = forget      ! Forgetting factor
 
       CALL PDAF_init(filtertype, subtype, nIter0,
      &     filter_param_i, 2,
-     &     filter_param_r, 2,
+     &     filter_param_r, 1,
      &     COMM_model, COMM_filter, COMM_couple,
      &     task_id, n_modeltasks, filterpe, init_ens_pdaf,
      &     screen, status_pdaf)
 
+
+C     ! *** Additional parameter specifications ***
+C     ! *** -- These are all optional --        ***
+
+C     Generic settings
+      CALL PDAF_set_iparam(5, type_forget, status_pdaf)
+      CALL PDAF_set_iparam(6, type_trans, status_pdaf)
+      CALL PDAF_set_iparam(7, type_sqrt, status_pdaf)
+      CALL PDAF_set_iparam(8, observe_ens, status_pdaf)
+      CALL PDAF_set_iparam(9, type_obs_init, status_pdaf)
 
 C     *** Check whether initialization of PDAF was successful ***
       IF (status_pdaf /= 0) THEN
