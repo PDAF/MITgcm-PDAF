@@ -148,7 +148,7 @@ C     ************************************************************
          DO i = 1+fields(j)%off, fields(j)%dim+fields(j)%off
             rmse_est(j) = rmse_est(j) + variance_p(i)
          ENDDO
-         rmse_est(j) = SQRT(rmse_est(j) / fields(j))%dim
+         rmse_est(j) = SQRT(rmse_est(j) / fields(j)%dim)
       ENDDO
       
       WRITE(suff,'(I10.10)') myIter
