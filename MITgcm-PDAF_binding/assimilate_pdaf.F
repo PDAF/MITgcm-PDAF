@@ -14,10 +14,10 @@ C
 C     !INTERFACE:
       SUBROUTINE assimilate_pdaf(myTimeLoc, myIterLoc, myThidLoc)
 C     !USES:
-      USE pdaf_interfaces_module,
-     & ONLY:  PDAFomi_assimilate_local,
-     &        PDAFomi_assimilate_global,
-     &        PDAFomi_assimilate_lenkf,
+      USE pdaf,
+     & ONLY:  PDAF3_assimilate_local,
+     &        PDAF3_assimilate_global,
+     &        PDAF3_assimilate_lenkf,
      &        PDAF_get_localfilter
       USE mod_parallel_model, ONLY: mype_world, abort_parallel
       USE mod_assimilation, ONLY: filtertype, myIter, myThid, myTime
@@ -70,24 +70,24 @@ C     Check whether the filter is domain-localized
 
       IF (localfilter == 1) THEN
 C        WRITE(*,*) 'Call of PDAFomi_assimilate_local'
-         CALL PDAFomi_assimilate_local(collect_state_pdaf,
+         CALL PDAF3_assimilate_local(collect_state_pdaf,
      &        distribute_state_pdaf, init_dim_obs_pdafomi,
-     &        obs_op_pdafomi, prepoststep_ens_pdaf,
+     &        obs_op_pdafomi, 
      &        init_n_domains_pdaf, init_dim_l_pdaf,
      &        init_dim_obs_l_pdafomi, g2l_state_pdaf,
-     &        l2g_state_pdaf, next_observation_pdaf,
-     &        status_pdaf)
+     &        l2g_state_pdaf, prepoststep_ens_pdaf,
+     &        next_observation_pdaf, status_pdaf)
 
       ELSE
          IF (filtertype/=8) THEN
 C           All global filters, except LEnKF
-            CALL PDAFomi_assimilate_global(collect_state_pdaf,
+            CALL PDAF3_assimilate_global(collect_state_pdaf,
      &           distribute_state_pdaf, init_dim_obs_pdafomi,
      &           obs_op_pdafomi, prepoststep_ens_pdaf,
      &           next_observation_pdaf, status_pdaf)
          ELSE
 C           LEnKF has its own OMI interface routine
-            CALL PDAFomi_assimilate_lenkf(collect_state_pdaf,
+            CALL PDAF3_assimilate_lenkf(collect_state_pdaf,
      &           distribute_state_pdaf, init_dim_obs_pdafomi,
      &           obs_op_pdafomi, prepoststep_ens_pdaf,
      &           localize_covar_pdafomi, next_observation_pdaf,

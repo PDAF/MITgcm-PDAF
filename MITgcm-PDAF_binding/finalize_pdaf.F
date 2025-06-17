@@ -14,6 +14,8 @@ C     2017-12 - L. Nerger - Initial version
 C     Later revisions - see svn log
 C
 C     !USES:
+      USE PDAF,
+     &     ONLY: PDAF_print_info, PDAF_deallocate
       USE mod_parallel_model, ONLY : mype_world
 
       IMPLICIT NONE

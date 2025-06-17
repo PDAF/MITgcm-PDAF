@@ -52,7 +52,7 @@ C     ! * Later revisions - see repository log
       MODULE obs_etan_pdafomi
 
       USE mod_parallel_pdaf, ONLY: mype_filter    ! Rank of filter process
-      USE PDAFomi, ONLY: obs_f, obs_l   ! Declaration of observation data types
+      USE PDAF, ONLY: obs_f, obs_l   ! Declaration of observation data types
 
       IMPLICIT NONE
       SAVE
@@ -156,7 +156,7 @@ C     !
       SUBROUTINE init_dim_obs_etan(step, dim_obs)
 
 
-      USE PDAFomi, ONLY: PDAFomi_gather_obs
+      USE PDAF, ONLY: PDAFomi_gather_obs
       USE mod_assimilation,
      &     ONLY: filtertype, cradius, id, off_fields
 
@@ -309,7 +309,7 @@ C     ! The routine is called by all filter processes.
 C     !
       SUBROUTINE obs_op_etan(dim_p, dim_obs, state_p, ostate)
 
-      USE PDAFomi, ONLY: PDAFomi_obs_op_gridpoint
+      USE PDAF, ONLY: PDAFomi_obs_op_gridpoint
 
       IMPLICIT NONE
 
@@ -351,7 +351,7 @@ C     !
      &    dim_obs_l)
 
 C     ! Include PDAFomi function
-      USE PDAFomi, ONLY: PDAFomi_init_dim_obs_l
+      USE PDAF, ONLY: PDAFomi_init_dim_obs_l
 C    ! Include localization radius and local coordinates
       USE mod_assimilation, ONLY: coords_l, cradius,
      &    locweight, sradius
@@ -391,7 +391,7 @@ C     !
       SUBROUTINE localize_covar_etan(dim_p,dim_obs,HP_p,HPH,coords_p)
 
 C     ! Include PDAFomi function
-      USE PDAFomi, ONLY: PDAFomi_localize_covar
+      USE PDAF, ONLY: PDAFomi_localize_covar
 C     ! Include localization radius and local coordinates
       USE mod_assimilation, ONLY: cradius, locweight, sradius
 

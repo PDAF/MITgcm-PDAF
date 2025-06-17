@@ -24,8 +24,8 @@ C     Later revisions - see svn log
 C
 C     !USES:
 C     Interface definitions for PDAF
-      USE pdaf_interfaces_module,
-     &     ONLY: PDAF_init
+      USE pdaf,
+     &     ONLY: PDAF_init, PDAF_init_forecast
 C     Parallelization variables for model
       USE mod_parallel_model,
      &     ONLY: mype_world, COMM_model, abort_parallel
@@ -65,8 +65,6 @@ C     Local variables
       INTEGER :: filter_param_i(7)       ! Integer parameter array for filter
       REAL(kind=8) :: filter_param_r(2)  ! Real parameter array for filter
       INTEGER :: status_pdaf             ! PDAF status flag
-      INTEGER :: doexit, steps           ! Not used in this implementation
-      REAL(kind=8) :: timenow            ! Not used in this implementation
 
 C     External subroutines
       EXTERNAL :: init_ens_pdaf    ! Ensemble initialization
@@ -303,7 +301,7 @@ C     **********************************
 C     *** Prepare ensemble forecasts ***
 C     **********************************
 
-      CALL PDAF_get_state(steps, timenow, doexit, next_observation_pdaf,
+      CALL PDAF_init_forecast(next_observation_pdaf,
      &     distribute_state_pdaf, prepoststep_ens_pdaf, status_pdaf)
 
       END
