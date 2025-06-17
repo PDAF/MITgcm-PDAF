@@ -158,7 +158,7 @@ C     !
 
       USE PDAF, ONLY: PDAFomi_gather_obs
       USE mod_assimilation,
-     &     ONLY: filtertype, cradius, id, off_fields
+     &     ONLY: filtertype, cradius, id, fields
 
       IMPLICIT NONE
 
@@ -248,7 +248,7 @@ C     ! 1 if observations are at grid points; >1 if interpolation is required
             cnt0 = cnt0 + 1
             IF (obs_field(i,j) > -999.0) THEN
               cnt = cnt + 1
-              thisobs%id_obs_p(1, cnt) = cnt0 + off_fields(id%etan)
+              thisobs%id_obs_p(1, cnt) = cnt0 + fields(id%etan)%off
               obs_p(cnt) = obs_field(i, j)
               ocoord_p(1, cnt) = xC(i, j, 1, 1)
               ocoord_p(2, cnt) = yC(i, j, 1, 1)

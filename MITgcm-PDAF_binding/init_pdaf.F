@@ -38,8 +38,7 @@ C     Variables for assimilation
      &     nsteps_between_obs, type_forget, forget,
      &     locweight, cradius, sradius, type_trans, type_sqrt,
      &     myIter, myThid, MyTime, write_ens, 
-     &     n_fields, id, dim_fields, off_fields,
-     &     observe_ens, type_obs_init
+     &     n_fields, id, fields, observe_ens, type_obs_init
       USE obs_etan_pdafomi,
      &      ONLY: assim_etan, rms_obs_etan
 
@@ -120,20 +119,17 @@ C     Specify field IDs in state vector ('id' allows to give the field a name)
       id%vvel = 5
 
 C     Define field dimensions
-      allocate(dim_fields(n_fields))
+      allocate(fields(n_fields))
 
-      dim_fields(id%etan) = Nx*Ny    ! EtaN
-      dim_fields(id%theta)= Nx*Ny*Nr ! Theta
-      dim_fields(id%salt) = Nx*Ny*Nr ! Salt
-      dim_fields(id%uvel) = Nx*Ny*Nr ! uVel
-      dim_fields(id%vvel) = Nx*Ny*Nr ! vVel
+      fields(id%etan)%dim = Nx*Ny    ! EtaN
+      fields(id%theta)%dim= Nx*Ny*Nr ! Theta
+      fields(id%salt)%dim = Nx*Ny*Nr ! Salt
+      fields(id%uvel)%dim = Nx*Ny*Nr ! uVel
+      fields(id%vvel)%dim = Nx*Ny*Nr ! vVel
 
-C     Offsets of fields in state vector
-      allocate(off_fields(n_fields))
-
-      off_fields(1) = 0
+      fields(1)%off = 0
       DO i = 2, n_fields
-         off_fields(i) = off_fields(i-1) + dim_fields(i-1)
+         fields(i)%off = fields(i-1)%off + fields(i-1)%dim
       END DO
 
 

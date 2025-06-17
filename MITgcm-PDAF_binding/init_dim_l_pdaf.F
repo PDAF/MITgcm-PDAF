@@ -22,7 +22,7 @@ C     !USES:
       USE PDAF, 
      &     ONLY: PDAFlocal_set_indices
       USE mod_assimilation,
-     &     ONLY: coords_l, id_lstate_in_pstate, n_fields, off_fields, id
+     &     ONLY: coords_l, n_fields, fields, id
 
       IMPLICIT NONE
 
@@ -42,6 +42,7 @@ C     Called by: PDAF_letkf_update   (as U_init_dim_l)
 C     *** local variables ***
       INTEGER :: i, k, cnt       ! Counters
       INTEGER :: domain_index(2) ! i,j indices of local analysis domain
+      INTEGER, ALLOCATABLE :: id_lstate_in_pstate(:) ! Indices of local state vector in PE-local global state vector
 
 
 C     ****************************************
@@ -71,12 +72,10 @@ C     ***  vector elements in the global state vector.   ***
 C     ******************************************************
 
 C     Allocate array
-      IF (ALLOCATED(id_lstate_in_pstate))
-     &     DEALLOCATE(id_lstate_in_pstate)
       ALLOCATE(id_lstate_in_pstate(dim_l))
 
 C     EtaN is 2D
-      id_lstate_in_pstate(1) = domain_p + off_fields(id%etan)
+      id_lstate_in_pstate(1) = domain_p + fields(id%etan)%off
 
 C     3D fields
 C     This runs through all fields and excludes etaN.
@@ -86,7 +85,7 @@ C     This approach ensures its independence of the id values of etaN
          IF (i /= id%etan) THEN
             DO k = 1, Nr
                id_lstate_in_pstate(cnt)
-     &              = domain_p + off_fields(i) + (k-1)*(sNx*sNy)
+     &              = domain_p + fields(i)%off + (k-1)*(sNx*sNy)
                cnt = cnt+1
             ENDDO
          ENDIF
@@ -94,5 +93,8 @@ C     This approach ensures its independence of the id values of etaN
 
 C     Provide the index vector to PDAF
       CALL PDAFlocal_set_indices(dim_l, id_lstate_in_pstate)
+
+C     Deallocate array
+      DEALLOCATE(id_lstate_in_pstate)
 
       END SUBROUTINE init_dim_l_pdaf

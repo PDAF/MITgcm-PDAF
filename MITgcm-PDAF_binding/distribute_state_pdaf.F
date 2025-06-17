@@ -31,7 +31,7 @@ C     !INTERFACE:
 
 C     !USES:
       USE mod_assimilation,
-     &     ONLY: myThid, id, off_fields
+     &     ONLY: myThid, id, fields
 
       IMPLICIT NONE
 
@@ -60,7 +60,7 @@ C     *** Each model PE knows his sub-state   ***
 C     *******************************************
 
 C     *** Sea surface height (etaN) ***
-      cnt = off_fields(id%etan)
+      cnt = fields(id%etan)%off
       DO bj=myByLo(myThid),myByHi(myThid)
          DO bi=myBxLo(myThid),myBxHi(myThid)
             DO j=1,sNy
@@ -73,7 +73,7 @@ C     *** Sea surface height (etaN) ***
       ENDDO
 
 C     *** TEMP (theta) ***
-      cnt = off_fields(id%theta)
+      cnt = fields(id%theta)%off
       DO bj=myByLo(myThid),myByHi(myThid)
          DO bi=myBxLo(myThid),myBxHi(myThid)
             DO k=1,Nr
@@ -88,7 +88,7 @@ C     *** TEMP (theta) ***
       ENDDO
 
 C     *** SALT (salt) ***
-      cnt = off_fields(id%salt)
+      cnt = fields(id%salt)%off
       DO bj=myByLo(myThid),myByHi(myThid)
          DO bi=myBxLo(myThid),myBxHi(myThid)
             DO k=1,Nr
@@ -103,7 +103,7 @@ C     *** SALT (salt) ***
       ENDDO
 
 C     *** U velocity (uVel) ***
-      cnt = off_fields(id%uvel)
+      cnt = fields(id%uvel)%off
       DO bj=myByLo(myThid),myByHi(myThid)
          DO bi=myBxLo(myThid),myBxHi(myThid)
             DO k=1,Nr
@@ -118,7 +118,7 @@ C     *** U velocity (uVel) ***
       ENDDO
 
 C     *** V velocity (vVel) ***
-      cnt = off_fields(id%vvel)
+      cnt = fields(id%vvel)%off
       DO bj=myByLo(myThid),myByHi(myThid)
          DO bi=myBxLo(myThid),myBxHi(myThid)
             DO k=1,Nr

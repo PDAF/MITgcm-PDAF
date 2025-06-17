@@ -36,7 +36,7 @@ C     !INTERFACE:
 C     !USES:
       USE mod_assimilation,
      &     ONLY: myIter, myThid, iter_null,
-     &     n_fields, off_fields, dim_fields, write_ens
+     &     n_fields, fields, write_ens
       USE mod_parallel_pdaf, ONLY: mype_filter
 
       IMPLICIT NONE
@@ -145,10 +145,10 @@ C     *** Compute RMS errors according to sampled covar matrix ***
 C     ************************************************************
 
       DO j = 1, n_fields
-         DO i = 1+off_fields(j), dim_fields(j)+off_fields(j)
+         DO i = 1+fields(j)%off, fields(j)%dim+fields(j)%off
             rmse_est(j) = rmse_est(j) + variance_p(i)
          ENDDO
-         rmse_est(j) = SQRT(rmse_est(j) / dim_fields(j))
+         rmse_est(j) = SQRT(rmse_est(j) / fields(j))%dim
       ENDDO
       
       WRITE(suff,'(I10.10)') myIter

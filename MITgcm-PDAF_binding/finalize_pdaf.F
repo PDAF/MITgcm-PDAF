@@ -29,7 +29,7 @@ C     Called by: the_main_loop
          CALL PDAF_print_info(3)
 
          ! Show allocated memory for PDAF
-         CALL PDAF_print_info(2)
+         CALL PDAF_print_info(10)
       END IF
 
       WRITE (*,'(a,5x,a)')
