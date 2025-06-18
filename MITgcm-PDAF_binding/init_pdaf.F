@@ -47,13 +47,6 @@ C     !ARGUMENTS:
       INTEGER, INTENT(in) :: myIterLoc
       INTEGER, INTENT(in) :: myThidLoc
       REAL(kind=8), INTENT(in) :: myTimeLoc
-
-C     !CALLING SEQUENCE:
-C     Called by: the_main_loop
-C     Calls: init_pdaf_parse
-C     Calls: init_pdaf_info
-C     Calls: PDAF_init
-C     Calls: PDAF_get_state
 C!EOP
 
 C     Local variables
@@ -133,76 +126,16 @@ C     **********************************************************
 C     ***   CONTROL OF PDAF - used in call to PDAF_init      ***
 C     **********************************************************
 
+C     For possible option values see mod_assimilation.F
+
 C     *** IO options ***
       screen = 2    ! Write screen output (1) for output, (2) add timings
 
 C     *** Filter specific variables
       filtertype = 7            ! Type of filter
-                    !   SEIK (1), EnKF (2), LSEIK (3), ETKF (4), LETKF (5)
-                    !   ESTKF (6), LESTKF (7), LEnKF (8), NETF (9), LNETF (10), PF (12)
       subtype = 0               ! subtype of filter:
-                          !   SEIK:
-                          !     (0) ensemble forecast; new formulation
-                          !     (1) ensemble forecast; old formulation
-                          !     (2) fixed error space basis
-                          !     (3) fixed state covariance matrix
-                          !     (4) SEIK with ensemble transformation
-                          !   EnKF:
-                          !     (0) analysis for large observation dimension
-                          !     (1) analysis for small observation dimension
-                          !   LSEIK:
-                          !     (0) ensemble forecast;
-                          !     (2) fixed error space basis
-                          !     (3) fixed state covariance matrix
-                          !     (4) LSEIK with ensemble transformation
-                          !   ETKF:
-                          !     (0) ETKF using T-matrix like SEIK
-                          !     (1) ETKF following Hunt et al. (2007)
-                          !       There are no fixed basis/covariance cases, as
-                          !       these are equivalent to SEIK subtypes 2/3
-                          !   LETKF:
-                          !     (0) LETKF using T-matrix like SEIK
-                          !     (1) LETKF following Hunt et al. (2007)
-                          !       There are no fixed basis/covariance cases, as
-                          !       these are equivalent to LSEIK subtypes 2/3
-                          !   ESTKF:
-                          !     (0) standard ESTKF 
-                          !       There are no fixed basis/covariance cases, as
-                          !       these are equivalent to SEIK subtypes 2/3
-                          !   LESTKF:
-                          !     (0) standard LESTKF 
-                          !       There are no fixed basis/covariance cases, as
-                          !       these are equivalent to LSEIK subtypes 2/3
-                          !   LEnKF:
-                          !     (0) Standard form of EnKF with covariance localization
-                          !   NETF:
-                          !     (0) standard NETF 
-                          !   LNETF:
-                          !     (0) standard LNETF
-                          !   PF:
-                          !     (0) standard PF with resampling
       type_trans = 0            ! Type of ensemble transformation
-                           ! SEIK/LSEIK:
-                           ! (0) use deterministic omega
-                           ! (1) use random orthonormal omega orthogonal to (1,...,1)^T
-                           ! (2) use product of (0) with random orthonormal matrix with
-                           !     eigenvector (1,...,1)^T
-                           ! ETKF/LETKF with subtype=4:
-                           ! (0) use deterministic symmetric transformation
-                           ! (2) use product of (0) with random orthonormal matrix with
-                           !     eigenvector (1,...,1)^T
-                           ! ESTKF/LESTKF:
-                           ! (0) use deterministic omega
-                           ! (1) use random orthonormal omega orthogonal to (1,...,1)^T
-                           ! (2) use product of (0) with random orthonormal matrix with
-                           !     eigenvector (1,...,1)^T
-                           ! NETF/LNETF:
-                           ! (0) use random orthonormal transformation orthogonal to (1,...,1)^T
-                           ! (1) use identity transformation
       type_forget = 0           ! Type of forgetting factor in ETKF/LETKF/ESTKF/LESTKF
-                    !   (0) fixed
-                    !   (1) global adaptive
-                    !   (2) local adaptive for LSEIK/LETKF/LESTKF
       forget  = 1.0             ! Forgetting factor
       type_sqrt = 0             ! Type of transform matrix square-root
                                 !   (0) symmetric square root, (1) Cholesky decomposition
@@ -223,14 +156,9 @@ C     Observation error standard deviation
 
 C     Localization settings for LESTKF/LETKF
       locweight = 4             ! Type of localizating weighting
-                    !   (0) constant weight of 1
-                    !   (1) exponentially decreasing with SRADIUS
-                    !   (2) use 5th-order polynomial
-                    !   (3) regulated localization of R with mean error variance
-                    !   (4) regulated localization of R with single-point error variance
-      cradius = 50000.0     ! Localization cut-off radius
-      sradius = cradius     ! Support radius for 5th-order polynomial
-                    ! or radius for 1/e for exponential weighting
+      cradius = 50000.0         ! Localization cut-off radius
+      sradius = cradius         ! Support radius for 5th-order polynomial
+                                ! or radius for 1/e for exponential weighting
 
 
 C     ***********************************

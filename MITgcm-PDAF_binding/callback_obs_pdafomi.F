@@ -77,7 +77,7 @@ C     ! Include functions for different observations
 
       IMPLICIT NONE
 
-C! *** Arguments ***
+C     ! *** Arguments ***
       INTEGER, INTENT(in) :: step                    !< Current time step
       INTEGER, INTENT(in) :: dim_p                   !< PE-local state dimension
       INTEGER, INTENT(in) :: dim_obs                 !< Dimension of full observed state
@@ -93,8 +93,6 @@ C     ! The order of these calls is not relevant as the setup
 C     ! of the overall observation vector is defined by the
 C     ! order of the calls in init_dim_obs_pdafomi
       CALL obs_op_etan(dim_p, dim_obs, state_p, ostate)
-C     !  CALL obs_op_etan2(dim_p, dim_obs, state_p, ostate)
-C     !  CALL obs_op_C(dim_p, dim_obs, state_p, ostate)
 
       END
 

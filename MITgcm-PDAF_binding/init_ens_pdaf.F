@@ -1,5 +1,3 @@
-C     $Id$
-C
 C     !ROUTINE: init_ens_pdaf --- Initialize ensemble
 C
 C     !DESCRIPTION:

@@ -20,7 +20,7 @@ C     !MODULE:
       MODULE mod_assimilation
 
 C     !USES:
-      USE mod_mitgcm  ! Inclide MITgcm specific variables
+      USE mod_mitgcm  ! Include MITgcm specific variables
 
       IMPLICIT NONE
       SAVE
@@ -129,7 +129,6 @@ C     General control of PDAF - available as command line options
                           !     (0) standard LNETF
                           !   PF:
                           !     (0) standard PF with resampling
-      INTEGER :: incremental  ! Perform incremental updating in LSEIK
       INTEGER :: dim_lag      ! Number of time instances for smoother
 
 C     Filter settings - available as command line options

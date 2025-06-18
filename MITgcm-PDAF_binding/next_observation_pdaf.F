@@ -1,4 +1,3 @@
-C     $Id$
 C     !BOP
 C
 C     !ROUTINE: next_observation_pdaf --- Initialize information on next observation
@@ -23,6 +22,7 @@ C     Later revisions - see svn log
 C
 C     !INTERFACE:
       SUBROUTINE next_observation_pdaf(stepnow, nsteps, doexit, time)
+
 C     !USES:
       USE mod_assimilation,
      &     ONLY: myTime, nsteps_between_obs

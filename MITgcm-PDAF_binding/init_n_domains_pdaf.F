@@ -1,5 +1,3 @@
-C     $Id$
-C
 C     !ROUTINE: init_n_domains_pdaf --- Set number of local analysis domains
 C
 C     !DESCRIPTION:

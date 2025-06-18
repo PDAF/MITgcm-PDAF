@@ -1,5 +1,3 @@
-C     $Id$
-C
 C     !ROUTINE: init_dim_l_pdaf --- Set dimension of local model state
 C
 C     !DESCRIPTION:

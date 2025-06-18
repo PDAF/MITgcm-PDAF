@@ -1,4 +1,3 @@
-C     $Id$
 C     !BOP
 C
 C     !ROUTINE: collect_state_pdaf --- Initialize state vector from model fields
