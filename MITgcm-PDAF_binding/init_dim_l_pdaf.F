@@ -22,7 +22,8 @@ C     !USES:
       USE PDAF, 
      &     ONLY: PDAFlocal_set_indices
       USE mod_assimilation,
-     &     ONLY: coords_l, n_fields, fields, id
+     &     ONLY: coords_l, n_fields, fields, id,
+     &     sNx, sNy, Nr, xC, yC
 
       IMPLICIT NONE
 
@@ -34,10 +35,6 @@ C     !ARGUMENTS:
 C     !CALLING SEQUENCE:
 C     Called by: PDAF_lestkf_update  (as U_init_dim_l)
 C     Called by: PDAF_letkf_update   (as U_init_dim_l)
-
-#include "CPP_OPTIONS.h"
-#include "SIZE.h"
-#include "GRID.h"
 
 C     *** local variables ***
       INTEGER :: i, k, cnt       ! Counters

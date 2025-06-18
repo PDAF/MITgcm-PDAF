@@ -144,12 +144,10 @@ C     !
 
 C     ! Include functions for different observations
       USE obs_etan_pdafomi, ONLY: localize_covar_etan
+      USE mod_assimilation, 
+     &   ONLY:  sNx, sNy, xC, yC
 
       IMPLICIT NONE
-
-#include "CPP_OPTIONS.h"
-#include "SIZE.h"
-#include "GRID.h"
 
 C     ! *** Arguments ***
       INTEGER, INTENT(in) :: dim_p                         !< PE-local state dimension

@@ -1,5 +1,3 @@
-C     $Id$
-
 C     !BOP
 C
 C     !ROUTINE: distribute_state_pdaf --- Initialize model fields from state vector
@@ -24,26 +22,20 @@ C     !REVISION HISTORY:
 C     2004-10 - Lars Nerger - Initial code
 C     Later revisions - see svn log
 C
-#include "CPP_OPTIONS.h"
-      
 C     !INTERFACE:
       SUBROUTINE distribute_state_pdaf(dim_p, state_p)
 
 C     !USES:
       USE mod_assimilation,
-     &     ONLY: myThid, id, fields
+     &     ONLY: myThid, id, fields,
+     &     sNx, sNy, Nr, etaN, theta, salt, uVel, vVel,
+     &     myBxLo, myBxHi, myByLo, myByHi, MAX_LEN_MBUF
 
       IMPLICIT NONE
 
 C     !ARGUMENTS:
       INTEGER, INTENT(in) :: dim_p ! PE-local state dimension
       REAL(kind=8), INTENT(inout) :: state_p(dim_p) ! PE-local state vector
-
-C     !Local variables:
-#include "SIZE.h"
-#include "EEPARAMS.h"
-#include "GRID.h"
-#include "DYNVARS.h"
 
 C     Local variables
       INTEGER i,j,k,bi,bj,cnt

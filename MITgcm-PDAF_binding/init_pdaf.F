@@ -1,6 +1,3 @@
-C     $Id$
-#include "PACKAGES_CONFIG.h"
-#include "CPP_OPTIONS.h"
 C!BOP
 C
 C     !ROUTINE: init_pdaf - Interface routine to call initialization of PDAF
@@ -38,13 +35,12 @@ C     Variables for assimilation
      &     nsteps_between_obs, type_forget, forget,
      &     locweight, cradius, sradius, type_trans, type_sqrt,
      &     myIter, myThid, MyTime, write_ens, 
-     &     n_fields, id, fields, observe_ens, type_obs_init
+     &     n_fields, id, fields, observe_ens, type_obs_init,
+     &     sNx, sNy, Nr, Nx, Ny
       USE obs_etan_pdafomi,
      &      ONLY: assim_etan, rms_obs_etan
 
       IMPLICIT NONE
-
-#include "SIZE.h"
 
 C     !ARGUMENTS:
       INTEGER, INTENT(in) :: nIter0

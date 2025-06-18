@@ -20,11 +20,11 @@ C     !MODULE:
       MODULE mod_assimilation
 
 C     !USES:
+      USE mod_mitgcm  ! Inclide MITgcm specific variables
+
       IMPLICIT NONE
       SAVE
 C!EOP
-
-C     *** Variables specific for MITgcm ***
 
       INTEGER :: myIter       ! Iteration counter
       INTEGER :: myThid       ! Thread ID

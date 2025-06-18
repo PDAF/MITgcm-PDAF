@@ -18,7 +18,10 @@ C     Later revisions - see svn log
 C
 C     !INTERFACE:
       SUBROUTINE init_n_domains_pdaf(step, n_domains_p)
+
 C     !USES:
+      USE mod_assimilation,
+     &    ONLY: sNx, sNy
       IMPLICIT NONE
 
 C     !ARGUMENTS:
@@ -31,7 +34,6 @@ C     Called by: PDAF_lestkf_update  (as U_init_n_domains)
 C     Called by: PDAF_letkf_update   (as U_init_n_domains)
 
 C     *** local variables ***
-#include "SIZE.h"
 
 
 C     ************************************

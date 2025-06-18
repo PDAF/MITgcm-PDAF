@@ -47,8 +47,6 @@ C     ! __Revision history:__
 C     ! * 2021-03 - Nabir Mamnun - Initial code
 C     ! * Later revisions - see repository log
 
-#include "CPP_OPTIONS.h"
-
       MODULE obs_etan_pdafomi
 
       USE mod_parallel_pdaf, ONLY: mype_filter    ! Rank of filter process
@@ -158,12 +156,10 @@ C     !
 
       USE PDAF, ONLY: PDAFomi_gather_obs
       USE mod_assimilation,
-     &     ONLY: filtertype, cradius, id, fields
+     &     ONLY: filtertype, cradius, id, fields, 
+     &     sNx, sNy, xC, yC
 
       IMPLICIT NONE
-
-#include "SIZE.h"
-#include "GRID.h"
 
 C     !*** Arguments ***
       INTEGER, INTENT(in)    :: step       !< Current time step

@@ -36,7 +36,10 @@ C     !INTERFACE:
 C     !USES:
       USE mod_assimilation,
      &     ONLY: myIter, myThid, iter_null,
-     &     n_fields, fields, write_ens
+     &     n_fields, fields, write_ens,
+     &     sNx, sNy, Nr, etaN, theta, salt, uVel, vVel,
+     &     myBxLo, myBxHi, myByLo, myByHi, MAX_LEN_MBUF
+
       USE mod_parallel_pdaf, ONLY: mype_filter
 
       IMPLICIT NONE
@@ -59,11 +62,6 @@ C     Called by: PDAF_get_state      (as U_prepoststep)
 C     Called by: PDAF_X_update       (as U_prepoststep)
 C     Calls: MPI_send
 C     Calls: MPI_recv
-
-#include "CPP_OPTIONS.h"
-#include "SIZE.h"
-#include "EEPARAMS.h"
-#include "DYNVARS.h"
 
 C     *** local variables ***
       INTEGER :: i, j, member             ! Counters

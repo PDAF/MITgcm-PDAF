@@ -28,7 +28,9 @@ C     !INTERFACE:
 
 C     !USES:
       USE mod_assimilation,
-     &     ONLY: myThid, id, fields
+     &     ONLY: myThid, id, fields,
+     &     sNx, sNy, Nr, etaN, theta, salt, uVel, vVel,
+     &     myBxLo, myBxHi, myByLo, myByHi, MAX_LEN_MBUF
 
       IMPLICIT NONE
 
@@ -37,12 +39,6 @@ C     !ARGUMENTS:
       REAL(kind=8), INTENT(inout) :: state_p(dim_p) ! local state vector
 
 C     !Local variables:
-#include "CPP_OPTIONS.h"
-#include "SIZE.h"
-#include "EEPARAMS.h"
-#include "GRID.h"
-#include "DYNVARS.h"
-
       INTEGER :: i, j, k, bi, bj, cnt
       CHARACTER*(MAX_LEN_MBUF) ::  msgBuf
 
