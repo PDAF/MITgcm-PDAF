@@ -1,4 +1,3 @@
-C     $Id$
 C!BOP
 C
 C     !DESCRIPTION:
@@ -25,6 +24,8 @@ C     !USES:
       IMPLICIT NONE
       SAVE
 C!EOP
+
+C     *** Variables specific for MITgcm ***
 
       INTEGER :: myIter       ! Iteration counter
       INTEGER :: myThid       ! Thread ID

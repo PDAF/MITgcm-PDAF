@@ -1,5 +1,3 @@
-C     $Id$
-C
 C     !ROUTINE: prepoststep_ens_pdaf --- Used-defined Pre/Poststep routine for PDAF
 C
 C     !DESCRIPTION:

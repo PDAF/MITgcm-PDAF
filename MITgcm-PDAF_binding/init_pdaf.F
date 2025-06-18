@@ -1,5 +1,3 @@
-C!BOP
-C
 C     !ROUTINE: init_pdaf - Interface routine to call initialization of PDAF
 C
 C     !INTERFACE:
@@ -34,7 +32,7 @@ C     Variables for assimilation
      &     filtertype, subtype, dim_ens, iter_null,
      &     nsteps_between_obs, type_forget, forget,
      &     locweight, cradius, sradius, type_trans, type_sqrt,
-     &     myIter, myThid, MyTime, write_ens, 
+     &     myIter, myThid, MyTime, write_ens,
      &     n_fields, id, fields, observe_ens, type_obs_init,
      &     sNx, sNy, Nr, Nx, Ny
       USE obs_etan_pdafomi,
@@ -47,7 +45,6 @@ C     !ARGUMENTS:
       INTEGER, INTENT(in) :: myIterLoc
       INTEGER, INTENT(in) :: myThidLoc
       REAL(kind=8), INTENT(in) :: myTimeLoc
-C!EOP
 
 C     Local variables
       INTEGER :: i                       ! Counter

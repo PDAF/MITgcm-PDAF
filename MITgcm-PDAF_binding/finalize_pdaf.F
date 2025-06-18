@@ -1,5 +1,3 @@
-C     $Id$
-C
 C     !ROUTINE: finalize_pdaf - Initialize ensemble assimilation with PDAF
 C
 C     !INTERFACE:

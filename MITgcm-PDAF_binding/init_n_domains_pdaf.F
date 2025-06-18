@@ -20,6 +20,7 @@ C     !INTERFACE:
 C     !USES:
       USE mod_assimilation,
      &    ONLY: sNx, sNy
+
       IMPLICIT NONE
 
 C     !ARGUMENTS:
@@ -30,8 +31,6 @@ C     !CALLING SEQUENCE:
 C     Called by: PDAF_lseik_update   (as U_init_n_domains)
 C     Called by: PDAF_lestkf_update  (as U_init_n_domains)
 C     Called by: PDAF_letkf_update   (as U_init_n_domains)
-
-C     *** local variables ***
 
 
 C     ************************************

@@ -1,4 +1,3 @@
-C     $Id: obs_etan_pdafomi.F90 561 2020-11-21 09:59:46Z lnerger $
 C     !> PDAF-OMI observation module for MITgcm
 
 C     ! This module handles operations for one data type (called 'module-type' below).
@@ -213,9 +212,9 @@ C     ! *** Count valid observations that lie within the process sub-domain ***
 
       cnt = 0
       DO j = 1, sNx
-        DO i= 1, sNy
-          IF (obs_field(i,j) > -999.0) cnt = cnt + 1
-        END DO
+         DO i= 1, sNy
+            IF (obs_field(i,j) > -999.0) cnt = cnt + 1
+         END DO
       END DO
       dim_obs_p = cnt
       dim_obs = cnt
@@ -240,16 +239,16 @@ C     ! 1 if observations are at grid points; >1 if interpolation is required
         cnt = 0
         cnt0 = 0
         DO j = 1, sNx
-          DO i= 1, sNy
-            cnt0 = cnt0 + 1
-            IF (obs_field(i,j) > -999.0) THEN
-              cnt = cnt + 1
-              thisobs%id_obs_p(1, cnt) = cnt0 + fields(id%etan)%off
-              obs_p(cnt) = obs_field(i, j)
-              ocoord_p(1, cnt) = xC(i, j, 1, 1)
-              ocoord_p(2, cnt) = yC(i, j, 1, 1)
-            END IF
-          END DO
+           DO i= 1, sNy
+              cnt0 = cnt0 + 1
+              IF (obs_field(i,j) > -999.0) THEN
+                 cnt = cnt + 1
+                 thisobs%id_obs_p(1, cnt) = cnt0 + fields(id%etan)%off
+                 obs_p(cnt) = obs_field(i, j)
+                 ocoord_p(1, cnt) = xC(i, j, 1, 1)
+                 ocoord_p(2, cnt) = yC(i, j, 1, 1)
+              END IF
+           END DO
         END DO
 
 

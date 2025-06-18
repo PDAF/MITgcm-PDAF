@@ -1,5 +1,3 @@
-C     $Id$
-C
 C     !ROUTINE: assimilate_pdaf - Routine to control perform analysis step
 C
 C     !DESCRIPTION:
@@ -71,11 +69,11 @@ C     *********************************
      &        prepoststep_ens_pdaf, next_observation_pdaf, status_pdaf)
 
       ELSE
-C        LEnKF has its own OMI interface routine
+C        LEnKF
          CALL PDAF3_assimilate_lenkf(collect_state_pdaf,
      &        distribute_state_pdaf, init_dim_obs_pdafomi,
-     &        obs_op_pdafomi, prepoststep_ens_pdaf,
-     &        localize_covar_pdafomi, next_observation_pdaf,
+     &        obs_op_pdafomi, localize_covar_pdafomi, 
+     &        prepoststep_ens_pdaf, next_observation_pdaf,
      &        status_pdaf)
       END IF
 
@@ -84,7 +82,7 @@ C     Check for errors during execution of PDAF
       IF (status_pdaf /= 0) THEN
          WRITE (*,'(/1x,a6,i3,a43,i4,a1/)')
      &        'ERROR ', status_pdaf,
-     &        ' in PDAF_put_state - stopping! (PE ', mype_world,')'
+     &        ' in PDAF3_assimilate - stopping! (PE ', mype_world,')'
          CALL  abort_parallel()
       END IF
 
