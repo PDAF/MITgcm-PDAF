@@ -2,11 +2,12 @@ Model binding example for the MITgcm ocean circulation model
 
 initial code - Lars Nerger, Himansu Kesari Pradhan, Alfred Wegener Institute, Bremerhaven, Germany, 2/2018. 
 update for PDAF-OMI - Lars Nerger, Nabir Mamnun, Alfred Wegener Institute, Bremerhaven, Germany, 11/2021
+update for PDAF3 - Lars Nerger, Alfred Wegener Institute, Bremerhaven, Germany, 6/2025
 pdaf@awi.de
 
-The code currently supports PDAF2. It will be upgraded to PDAF3.
+This code version supports PDAF3. For PDAF2 see the branch MITgcm-PDAF2.
 
-Overview
+Overview 
 --------
 
 This directory contains the code for a model binding of PDAF with the MITgcm ocean circulation model. This code is a simple example, which can build the basis for an adaption for the particular needs of your application. We provide the implementation for two cases: For a serial MITgcm without domain-decomposition and for MITgcm with MPI-parallelization using domain decomposition. Both variants are implemented with PDAF-OMI.
