@@ -145,7 +145,7 @@ C     ************************************************************
 
 C     Process-local variances
       DO j = 1, n_fields
-         DO i = 1+fields_(j)%off_p, fields(j)%dim_p+fields(j)%off_p
+         DO i = 1+fields(j)%off_p, fields(j)%dim_p+fields(j)%off_p
             var_est_p(j) = var_est_p(j) + variance_p(i)
          ENDDO
       ENDDO
