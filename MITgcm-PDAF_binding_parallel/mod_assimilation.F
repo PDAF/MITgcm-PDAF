@@ -1,6 +1,5 @@
-C     $Id$
 C!BOP
-!
+C
 C     !DESCRIPTION:
 C     This module provides variables needed for the
 C     assimilation within the routines of the dummy model.
@@ -20,6 +19,8 @@ C     !MODULE:
       MODULE mod_assimilation
 
 C     !USES:
+      USE mod_mitgcm  ! Include MITgcm specific variables
+
       IMPLICIT NONE
       SAVE
 C!EOP
@@ -36,12 +37,7 @@ C     *** Variables specific for state and observation vectors ***
       INTEGER :: dim_state_p                 ! Model state dimension for PE-local domain
       INTEGER :: iter_null                   ! Initial time step
       REAL(kind=8) :: time                   ! model time
-      INTEGER :: n_fields                    ! number of fields in state vector
-      INTEGER, ALLOCATABLE :: off_fields_p(:)  ! Offsets of fields in state vector
-      INTEGER, ALLOCATABLE :: dim_fields_p(:)  ! Dimension of fields in state vector
-      INTEGER, ALLOCATABLE :: dim_fields(:)    ! Global field dimensions in state vector
       REAL(kind=8) :: coords_l(2)            ! Coordinates of analysis domain
-      INTEGER, ALLOCATABLE :: id_lstate_in_pstate(:) ! Indices of local state vector in PE-local global state vector
 
 C     Declare Fortran type holding the indices of model fields in the state vector
 C     This can be extended to any number of fields - it severs to give each field a name
@@ -53,9 +49,24 @@ C     This can be extended to any number of fields - it severs to give each fiel
         INTEGER :: vvel
       END TYPE field_ids
 
+  !---- The next variables usually do not need editing -----
+
 C     Type variable holding field IDs in state vector
       TYPE(field_ids) :: id
 
+C     number of fields in state vector
+      INTEGER :: n_fields                   
+
+C     Generic type storing size and offset of each model field in the state vector
+C     This is generic, but one could extend this type to more variables, e.g. to store a field name
+      TYPE state_field
+        INTEGER :: dim            ! Global size of field in state vector
+        INTEGER :: dim_p          ! Process-local size of field in state vector
+        INTEGER :: off_p          ! Process-local offset of field in state vector
+      END TYPE state_field
+
+C     Vector of type variable holding dimension and offset of each field
+      TYPE(state_field), ALLOCATABLE :: fields(:)
 
 C     *** Below are the generic variables used for configuring PDAF ***
 C     *** Their values are set in init_PDAF                         ***
@@ -67,6 +78,8 @@ C     Settings for time stepping - available as command line options
 
 C     Settings for observations - available as command line options
       INTEGER :: nsteps_between_obs  ! time step interval between assimilation steps
+      INTEGER :: observe_ens=0       ! (0) apply H also to ensemble mean; (1) apply H only to ensemble states
+      INTEGER :: type_obs_init=1     ! init obs. (0) before or (1) after call to prepostsstep
 
 C     General control of PDAF - available as command line options
       INTEGER :: screen       ! Control verbosity of PDAF
@@ -118,7 +131,6 @@ C     General control of PDAF - available as command line options
                           !     (0) standard LNETF
                           !   PF:
                           !     (0) standard PF with resampling
-      INTEGER :: incremental  ! Perform incremental updating in LSEIK
       INTEGER :: dim_lag      ! Number of time instances for smoother
 
 C     Filter settings - available as command line options

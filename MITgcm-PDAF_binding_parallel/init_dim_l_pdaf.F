@@ -1,5 +1,3 @@
-C     $Id$
-C
 C     !ROUTINE: init_dim_l_pdaf --- Set dimension of local model state
 C
 C     !DESCRIPTION:
@@ -19,9 +17,11 @@ C     !INTERFACE:
       SUBROUTINE init_dim_l_pdaf(step, domain_p, dim_l)
 
 C     !USES:
+      USE PDAF, 
+     &     ONLY: PDAFlocal_set_indices
       USE mod_assimilation,
-     &     ONLY: coords_l, id_lstate_in_pstate, n_fields,
-     &     off_fields_p, id
+     &     ONLY: coords_l, n_fields, fields_p, id,
+     &     sNx, sNy, Nr, xC, yC
 
       IMPLICIT NONE
 
@@ -34,13 +34,10 @@ C     !CALLING SEQUENCE:
 C     Called by: PDAF_lestkf_update  (as U_init_dim_l)
 C     Called by: PDAF_letkf_update   (as U_init_dim_l)
 
-#include "CPP_OPTIONS.h"
-#include "SIZE.h"
-#include "GRID.h"
-
 C     *** local variables ***
       INTEGER :: i, k, cnt       ! Counters
       INTEGER :: domain_index(2) ! i,j indices of local analysis domain
+      INTEGER, ALLOCATABLE :: id_lstate_in_pstate(:) ! Indices of local state vector in PE-local global state vector
 
 
 C     ****************************************
@@ -71,25 +68,29 @@ C     ***  vector elements in the global state vector.   ***
 C     ******************************************************
 
 C     Allocate array
-      IF (ALLOCATED(id_lstate_in_pstate))
-     &     DEALLOCATE(id_lstate_in_pstate)
       ALLOCATE(id_lstate_in_pstate(dim_l))
 
 C     EtaN is 2D
-      id_lstate_in_pstate(1) = domain_p + off_fields_p(id%etan)
+      id_lstate_in_pstate(1) = domain_p + fields_p(id%etan)%off
 
 C     3D fields
 C     This runs through all fields and excludes etaN.
-C     This approach ensures its independenc of the id values of etaN
+C     This approach ensures its independence of the id values of etaN
       cnt = 2
       DO i = 1, n_fields
          IF (i /= id%etan) THEN
             DO k = 1, Nr
                id_lstate_in_pstate(cnt)
-     &              = domain_p + off_fields_p(i) + (k-1)*(sNx*sNy)
+     &              = domain_p + fields_p(i)%off + (k-1)*(sNx*sNy)
                cnt = cnt+1
             ENDDO
          ENDIF
       ENDDO
+
+C     Provide the index vector to PDAF
+      CALL PDAFlocal_set_indices(dim_l, id_lstate_in_pstate)
+
+C     Deallocate array
+      DEALLOCATE(id_lstate_in_pstate)
 
       END SUBROUTINE init_dim_l_pdaf

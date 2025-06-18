@@ -1,4 +1,3 @@
-C     $Id$
 C     !BOP
 C
 C     !ROUTINE: next_observation_pdaf --- Initialize information on next observation
@@ -21,9 +20,9 @@ C     !REVISION HISTORY:
 C     2013-09 - Lars Nerger - Initial code
 C     Later revisions - see svn log
 C
-#include "CPP_OPTIONS.h"
 C     !INTERFACE:
       SUBROUTINE next_observation_pdaf(stepnow, nsteps, doexit, time)
+
 C     !USES:
       USE mod_assimilation,
      &     ONLY: myTime, nsteps_between_obs

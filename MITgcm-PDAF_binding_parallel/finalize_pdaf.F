@@ -1,5 +1,3 @@
-C     $Id$
-C
 C     !ROUTINE: finalize_pdaf - Initialize ensemble assimilation with PDAF
 C
 C     !INTERFACE:
@@ -14,6 +12,8 @@ C     2017-12 - L. Nerger - Initial version
 C     Later revisions - see svn log
 C
 C     !USES:
+      USE PDAF,
+     &     ONLY: PDAF_print_info, PDAF_deallocate
       USE mod_parallel_model, ONLY : mype_world
 
       IMPLICIT NONE
@@ -27,7 +27,7 @@ C     Called by: the_main_loop
          CALL PDAF_print_info(3)
 
          ! Show allocated memory for PDAF
-         CALL PDAF_print_info(2)
+         CALL PDAF_print_info(10)
       END IF
 
       WRITE (*,'(a,5x,a)')

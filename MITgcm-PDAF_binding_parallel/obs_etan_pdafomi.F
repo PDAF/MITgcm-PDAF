@@ -1,4 +1,3 @@
-C     $Id: obs_etan_pdafomi.F90 561 2020-11-21 09:59:46Z lnerger $
 C     !> PDAF-OMI observation module for MITgcm
 
 C     ! This module handles operations for one data type (called 'module-type' below).
@@ -47,12 +46,10 @@ C     ! __Revision history:__
 C     ! * 2021-03 - Nabir Mamnun - Initial code
 C     ! * Later revisions - see repository log
 
-#include "CPP_OPTIONS.h"
-
       MODULE obs_etan_pdafomi
 
       USE mod_parallel_pdaf, ONLY: mype_filter    ! Rank of filter process
-      USE PDAFomi, ONLY: obs_f, obs_l   ! Declaration of observation data types
+      USE PDAF, ONLY: obs_f, obs_l   ! Declaration of observation data types
 
       IMPLICIT NONE
       SAVE
@@ -156,19 +153,16 @@ C     !
       SUBROUTINE init_dim_obs_etan(step, dim_obs)
 
 
-      USE PDAFomi, ONLY: PDAFomi_gather_obs
+      USE PDAF, ONLY: PDAFomi_gather_obs
       USE mod_assimilation,
-     &     ONLY: filtertype, cradius, id, off_fields_p
+     &     ONLY: filtertype, cradius, id, fields, 
+     &     sNx, sNy, xC, yC, myYGlobalLo, myYGlobalLo
 
       IMPLICIT NONE
 
 C     !*** Arguments ***
       INTEGER, INTENT(in)    :: step       !< Current time step
       INTEGER, INTENT(inout) :: dim_obs    !< Dimension of full observation vector
-
-#include "SIZE.h"
-#include "GRID.h"
-#include "EEPARAMS.h"
 
 C     !*** Local variables ***
       INTEGER :: i, j                              ! Counters
@@ -312,7 +306,7 @@ C     ! The routine is called by all filter processes.
 C     !
       SUBROUTINE obs_op_etan(dim_p, dim_obs, state_p, ostate)
 
-      USE PDAFomi, ONLY: PDAFomi_obs_op_gridpoint
+      USE PDAF, ONLY: PDAFomi_obs_op_gridpoint
 
       IMPLICIT NONE
 
@@ -354,7 +348,7 @@ C     !
      &    dim_obs_l)
 
 C     ! Include PDAFomi function
-      USE PDAFomi, ONLY: PDAFomi_init_dim_obs_l
+      USE PDAF, ONLY: PDAFomi_init_dim_obs_l
 C    ! Include localization radius and local coordinates
       USE mod_assimilation, ONLY: coords_l, cradius,
      &    locweight, sradius
@@ -394,7 +388,7 @@ C     !
       SUBROUTINE localize_covar_etan(dim_p,dim_obs,HP_p,HPH,coords_p)
 
 C     ! Include PDAFomi function
-      USE PDAFomi, ONLY: PDAFomi_localize_covar
+      USE PDAF, ONLY: PDAFomi_localize_covar
 C     ! Include localization radius and local coordinates
       USE mod_assimilation, ONLY: cradius, locweight, sradius
 

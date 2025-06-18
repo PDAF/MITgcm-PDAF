@@ -1,5 +1,3 @@
-C     $Id$
-C
 C     !ROUTINE: init_ens_pdaf --- Initialize ensemble
 C
 C     !DESCRIPTION:
@@ -40,11 +38,6 @@ C     It is available here only for convenience and can be used freely.
 
 C     !CALLING SEQUENCE:
 C     Called by: PDAF_filter_init    (as U_init_ens)
-
-
-#include "CPP_OPTIONS.h"
-#include "SIZE.h"
-#include "DYNVARS.h"
 
 C     *** local variables ***
       INTEGER :: member  ! Counters

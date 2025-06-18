@@ -1,5 +1,3 @@
-C     $Id$
-
 C     !BOP
 C
 C     !ROUTINE: distribute_state_pdaf --- Initialize model fields from state vector
@@ -24,26 +22,20 @@ C     !REVISION HISTORY:
 C     2004-10 - Lars Nerger - Initial code
 C     Later revisions - see svn log
 C
-#include "CPP_OPTIONS.h"
-      
 C     !INTERFACE:
       SUBROUTINE distribute_state_pdaf(dim_p, state_p)
 
 C     !USES:
       USE mod_assimilation,
-     &     ONLY: myThid, id, off_fields_p
+     &     ONLY: myThid, id, fields,
+     &     sNx, sNy, Nr, etaN, theta, salt, uVel, vVel,
+     &     myBxLo, myBxHi, myByLo, myByHi, MAX_LEN_MBUF
 
       IMPLICIT NONE
 
 C     !ARGUMENTS:
       INTEGER, INTENT(in) :: dim_p ! PE-local state dimension
       REAL(kind=8), INTENT(inout) :: state_p(dim_p) ! PE-local state vector
-
-C     !Local variables:
-#include "SIZE.h"
-#include "EEPARAMS.h"
-#include "GRID.h"
-#include "DYNVARS.h"
 
 C     Local variables
       INTEGER i,j,k,bi,bj,cnt
@@ -60,7 +52,7 @@ C     *** Each model PE knows his sub-state   ***
 C     *******************************************
 
 C     *** Sea surface height (etaN) ***
-      cnt = off_fields_p(id%etan)
+      cnt = fields(id%etan)%off_p
       DO bj=myByLo(myThid),myByHi(myThid)
          DO bi=myBxLo(myThid),myBxHi(myThid)
             DO j=1,sNy
@@ -73,7 +65,7 @@ C     *** Sea surface height (etaN) ***
       ENDDO
 
 C     *** TEMP (theta) ***
-      cnt = off_fields_p(id%theta)
+      cnt = fields(id%theta)%off_p
       DO bj=myByLo(myThid),myByHi(myThid)
          DO bi=myBxLo(myThid),myBxHi(myThid)
             DO k=1,Nr
@@ -88,7 +80,7 @@ C     *** TEMP (theta) ***
       ENDDO
 
 C     *** SALT (salt) ***
-      cnt = off_fields_p(id%salt)
+      cnt = fields(id%salt)%off_p
       DO bj=myByLo(myThid),myByHi(myThid)
          DO bi=myBxLo(myThid),myBxHi(myThid)
             DO k=1,Nr
@@ -103,7 +95,7 @@ C     *** SALT (salt) ***
       ENDDO
 
 C     *** U velocity (uVel) ***
-      cnt = off_fields_p(id%uvel)
+      cnt = fields(id%uvel)%off_p
       DO bj=myByLo(myThid),myByHi(myThid)
          DO bi=myBxLo(myThid),myBxHi(myThid)
             DO k=1,Nr
@@ -118,7 +110,7 @@ C     *** U velocity (uVel) ***
       ENDDO
 
 C     *** V velocity (vVel) ***
-      cnt = off_fields_p(id%vvel)
+      cnt = fields(id%vvel)%off_p
       DO bj=myByLo(myThid),myByHi(myThid)
          DO bi=myBxLo(myThid),myBxHi(myThid)
             DO k=1,Nr

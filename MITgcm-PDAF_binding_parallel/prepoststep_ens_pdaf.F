@@ -1,5 +1,3 @@
-C     $Id$
-C
 C     !ROUTINE: prepoststep_ens_pdaf --- Used-defined Pre/Poststep routine for PDAF
 C
 C     !DESCRIPTION:
@@ -37,7 +35,10 @@ C     !USES:
       USE mpi
       USE mod_assimilation,
      &     ONLY: myIter, myThid, iter_null,
-     &     n_fields, off_fields_p, dim_fields_p, dim_fields, write_ens
+     &     n_fields, fields, write_ens,
+     &     sNx, sNy, Nr, etaN, theta, salt, uVel, vVel,
+     &     myBxLo, myBxHi, myByLo, myByHi, MAX_LEN_MBUF
+
       USE mod_parallel_pdaf, ONLY: mype_filter, COMM_filter, MPIerr
 
       IMPLICIT NONE
@@ -60,11 +61,6 @@ C     Called by: PDAF_get_state      (as U_prepoststep)
 C     Called by: PDAF_X_update       (as U_prepoststep)
 C     Calls: MPI_send
 C     Calls: MPI_recv
-
-#include "CPP_OPTIONS.h"
-#include "SIZE.h"
-#include "EEPARAMS.h"
-#include "DYNVARS.h"
 
 C     *** local variables ***
       INTEGER :: i, j, member             ! Counters
@@ -106,7 +102,7 @@ C     Allocate fields
       ALLOCATE(variance_p(dim_p))
       ALLOCATE(var_est_p(n_fields))
       ALLOCATE(rmse_est(n_fields))
-      
+
 C     Initialize numbers
       var_est_p  = 0.0
       invdim_ens    = 1.0d0 / REAL(dim_ens, 8)
@@ -149,7 +145,7 @@ C     ************************************************************
 
 C     Process-local variances
       DO j = 1, n_fields
-         DO i = 1+off_fields_p(j), dim_fields_p(j)+off_fields_p(j)
+         DO i = 1+fields_(j)%off_p, fields(j)%dim_p+fields(j)%off_p
             var_est_p(j) = var_est_p(j) + variance_p(i)
          ENDDO
       ENDDO
@@ -161,7 +157,7 @@ C     Compute global total variance using MPI_Allreduce
      &      MPI_SUM, COMM_filter, MPIerr)
       
       DO i = 1, n_fields
-         rmse_est(i) = SQRT(rmse_est(i) / REAL(dim_fields(i), 8))
+         rmse_est(i) = SQRT(rmse_est(i) / REAL(fields(i)%dim, 8))
       ENDDO
          
        
