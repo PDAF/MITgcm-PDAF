@@ -20,7 +20,7 @@ C     !USES:
       USE PDAF, 
      &     ONLY: PDAFlocal_set_indices
       USE mod_assimilation,
-     &     ONLY: coords_l, n_fields, fields_p, id,
+     &     ONLY: coords_l, n_fields, fields, id,
      &     sNx, sNy, Nr, xC, yC
 
       IMPLICIT NONE
@@ -71,7 +71,7 @@ C     Allocate array
       ALLOCATE(id_lstate_in_pstate(dim_l))
 
 C     EtaN is 2D
-      id_lstate_in_pstate(1) = domain_p + fields_p(id%etan)%off
+      id_lstate_in_pstate(1) = domain_p + fields(id%etan)%off_p
 
 C     3D fields
 C     This runs through all fields and excludes etaN.
@@ -81,7 +81,7 @@ C     This approach ensures its independence of the id values of etaN
          IF (i /= id%etan) THEN
             DO k = 1, Nr
                id_lstate_in_pstate(cnt)
-     &              = domain_p + fields_p(i)%off + (k-1)*(sNx*sNy)
+     &              = domain_p + fields(i)%off_p + (k-1)*(sNx*sNy)
                cnt = cnt+1
             ENDDO
          ENDIF
